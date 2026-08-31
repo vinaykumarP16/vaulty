@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vaulty - Cloud Account</title>
+  <style>
+    :root {
+      --bg-color: #f8f9fa;
+      --card-bg: #ffffff;
+      --text-color: #1d1d1f;
+      --border-color: #e0e0e0;
+      --subtext-color: #8e8e93;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-color: #121212;
+        --card-bg: #1e1e1e;
+        --text-color: #f5f5f7;
+        --border-color: #3a3a3c;
+        --subtext-color: #a1a1a6;
+      }
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .auth-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 30px;
+      width: 340px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      box-sizing: border-box;
+    }
+    h2 { margin-top: 0; font-size: 18px; text-align: center; margin-bottom: 6px; }
+    p { font-size: 12px; color: var(--subtext-color); text-align: center; margin-bottom: 20px; line-height: 1.4; }
+    
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      border: 1px solid var(--border-color);
+      background: var(--card-bg);
+      color: var(--text-color);
+      box-sizing: border-box;
+      outline: none;
+      font-size: 13px;
+    }
+    input:focus { border-color: #007aff; }
+
+    .user-info-box {
+      background: rgba(0, 122, 255, 0.08);
+      border: 1px solid rgba(0, 122, 255, 0.2);
+      padding: 12px;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .user-label { font-size: 11px; color: var(--subtext-color); text-transform: uppercase; letter-spacing: 0.5px; }
+    .user-email-display { font-size: 14px; font-weight: 600; color: #007aff; word-break: break-all; margin-top: 4px; }
+
+    .btn-group { display: flex; gap: 8px; margin-bottom: 10px; }
+    button {
+      flex: 1;
+      padding: 10px;
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.2s;
+    }
+    .btn-primary { background: #007aff; color: #fff; }
+    .btn-secondary { background: #e0e0e0; color: #333; }
+    .btn-danger { background: #ff3b30; color: #fff; }
+    .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-color); }
+    button:hover { opacity: 0.88; }
+
+    .forgot-link {
+      display: block;
+      text-align: right;
+      font-size: 11px;
+      color: #007aff;
+      text-decoration: none;
+      margin-top: -6px;
+      margin-bottom: 14px;
+      cursor: pointer;
+    }
+    .forgot-link:hover { text-decoration: underline; }
+
+    #statusMsg { font-size: 11px; text-align: center; margin-top: 10px; min-height: 14px; }
+  </style>
+</head>
+<body>
+
+  <div class="auth-card">
+    <h2>Vaulty Sync Account</h2>
+    
+    <!-- Logged Out View -->
+    <div id="loggedOutView">
+      <p>Sign in to sync your copied snippets directly through Cloud Firestore across all VDI sessions.</p>
+      
+      <input type="email" id="emailInput" placeholder="Work Email (e.g. name@company.com)">
+      <input type="password" id="passwordInput" placeholder="Password (min 6 characters)">
+
+      <a id="showForgotBtn" class="forgot-link">Forgot password?</a>
+
+      <div class="btn-group">
+        <button id="loginBtn" class="btn-primary">Log In</button>
+        <button id="signupBtn" class="btn-secondary">Sign Up</button>
+      </div>
+    </div>
+
+    <!-- Password Reset View -->
+    <div id="resetView" style="display: none;">
+      <p>Enter your email address and we will send you a password reset link.</p>
+      
+      <input type="email" id="resetEmailInput" placeholder="Enter your work email">
+
+      <div class="btn-group">
+        <button id="sendResetBtn" class="btn-primary">Send Reset Email</button>
+        <button id="backToLoginBtn" class="btn-secondary">Back to Login</button>
+      </div>
+    </div>
+
+    <!-- Logged In View -->
+    <div id="loggedInView" style="display: none;">
+      <div class="user-info-box">
+        <div class="user-label">Logged In As</div>
+        <div id="userEmailDisplay" class="user-email-display"></div>
+      </div>
+
+      <div class="btn-group">
+        <button id="logoutBtn" class="btn-danger">Log Out</button>
+        <button id="closeTabBtn" class="btn-outline">Close Tab</button>
+      </div>
+    </div>
+
+    <div id="statusMsg"></div>
+  </div>
+
+  <script src="./lib/firebase-app-compat.js"></script>
+  <script src="./lib/firebase-auth-compat.js"></script>
+  <script src="login.js"></script>
+</body>
+</html>

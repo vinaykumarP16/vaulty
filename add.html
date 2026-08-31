@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vaulty - Manage Items</title>
+  <style>
+    :root {
+      --bg-color: #f8f9fa;
+      --card-bg: #ffffff;
+      --text-color: #1d1d1f;
+      --subtext-color: #2c2c2e;
+      --border-color: #eee;
+      --input-border: #cccccc;
+      --item-bg: #f8f9fa;
+      --item-border: #e0e0e0;
+      --empty-color: #8e8e93;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-color: #121212;
+        --card-bg: #1e1e1e;
+        --text-color: #f5f5f7;
+        --subtext-color: #e1e1e6;
+        --border-color: #2c2c2e;
+        --input-border: #444446;
+        --item-bg: #2a2a2c;
+        --item-border: #3a3a3c;
+        --empty-color: #a1a1a6;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      padding: 40px 16px;
+      margin: 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 650px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 20px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+      margin-bottom: 14px;
+    }
+
+    h2 { margin: 0; font-size: 16px; font-weight: 600; color: var(--text-color); }
+
+    textarea, input[type="text"].search-box {
+      width: 100%;
+      padding: 10px;
+      font-family: inherit;
+      font-size: 13px;
+      border: 1px solid var(--input-border);
+      background-color: var(--card-bg);
+      color: var(--text-color);
+      outline: none;
+    }
+
+    textarea { height: 100px; resize: vertical; margin-bottom: 12px; }
+    input[type="text"].search-box { margin-bottom: 14px; border-radius: 4px; }
+    textarea:focus, input[type="text"].search-box:focus { border-color: #007aff; }
+
+    .btn-group { display: flex; gap: 8px; }
+
+    button {
+      font-family: inherit; font-size: 11px; font-weight: 600; padding: 6px 14px;
+      border-radius: 0px; cursor: pointer; transition: all 0.2s ease; line-height: 1;
+    }
+
+    .btn-save { border: 1px solid rgba(0, 122, 255, 0.4); background: rgba(0, 122, 255, 0.12); color: #007aff; }
+    .btn-save:hover { background: #007aff; color: #ffffff; }
+
+    .btn-save-close { border: 1px solid rgba(52, 199, 89, 0.4); background: rgba(52, 199, 89, 0.12); color: #28a745; }
+    .btn-save-close:hover { background: #28a745; color: #ffffff; }
+
+    .btn-export, .btn-import { border: 1px solid rgba(108, 117, 125, 0.4); background: rgba(108, 117, 125, 0.12); color: var(--subtext-color); }
+    .btn-export:hover, .btn-import:hover { background: #6c757d; color: #ffffff; }
+
+    ul { list-style: none; padding: 0; margin: 0; max-height: 450px; overflow-y: auto; }
+
+    li {
+      display: flex; align-items: flex-start; justify-content: space-between; padding: 10px;
+      margin-bottom: 8px; background: var(--item-bg); border: 1px solid var(--item-border); gap: 10px;
+    }
+
+    .text { flex: 1; font-size: 12px; line-height: 1.45; color: var(--subtext-color); white-space: pre-wrap; word-break: break-word; }
+    .source-link { display: block; font-size: 10px; color: #007aff; text-decoration: none; margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 400px; }
+    .actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+
+    .btn-delete { border: 1px solid rgba(255, 59, 48, 0.4); background: rgba(255, 59, 48, 0.12); color: #ff3b30; }
+    .btn-delete:hover { background: #ff3b30; color: #ffffff; }
+
+    .empty-state { text-align: center; color: var(--empty-color); font-size: 12px; padding: 20px 0; }
+
+    #importInput { display: none; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        <h2>Add Item to Vaulty</h2>
+      </div>
+      <textarea id="itemInput" placeholder="Enter or paste text here..."></textarea>
+      <div class="btn-group" style="justify-content: flex-end;">
+        <button id="saveBtn" class="btn-save">Save</button>
+        <button id="saveCloseBtn" class="btn-save-close">Save &amp; Close Tab</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h2>Saved Items List</h2>
+        <div class="btn-group">
+          <button id="exportBtn" class="btn-export">Export Backup</button>
+          <button id="importBtn" class="btn-import">Import Backup</button>
+        </div>
+      </div>
+      <input type="text" id="dashboardSearchInput" class="search-box" placeholder="Search by text content or domain/URL...">
+      <ul id="fullHistoryList"></ul>
+    </div>
+  </div>
+
+  <input type="file" id="importInput" accept=".json">
+
+  <script src="add.js"></script>
+</body>
+</html>
