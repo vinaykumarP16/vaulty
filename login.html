@@ -37,7 +37,21 @@
       width: 340px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
       box-sizing: border-box;
+      border-radius: 12px;
     }
+
+    /* Logo Styling */
+    .brand-header {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      margin-bottom: 8px;
+    }
+
     h2 { margin-top: 0; font-size: 18px; text-align: center; margin-bottom: 6px; }
     p { font-size: 12px; color: var(--subtext-color); text-align: center; margin-bottom: 20px; line-height: 1.4; }
     
@@ -51,6 +65,7 @@
       box-sizing: border-box;
       outline: none;
       font-size: 13px;
+      border-radius: 6px;
     }
     input:focus { border-color: #007aff; }
 
@@ -60,6 +75,7 @@
       padding: 12px;
       margin-bottom: 16px;
       text-align: center;
+      border-radius: 6px;
     }
     .user-label { font-size: 11px; color: var(--subtext-color); text-transform: uppercase; letter-spacing: 0.5px; }
     .user-email-display { font-size: 14px; font-weight: 600; color: #007aff; word-break: break-all; margin-top: 4px; }
@@ -72,6 +88,7 @@
       font-size: 12px;
       cursor: pointer;
       border: none;
+      border-radius: 6px;
       transition: opacity 0.2s;
     }
     .btn-primary { background: #007aff; color: #fff; }
@@ -98,13 +115,19 @@
 <body>
 
   <div class="auth-card">
-    <h2>Vaulty Sync Account</h2>
+    
+    <!-- Brand Header with Icon -->
+    <div class="brand-header">
+      <!-- Adjust src to match the relative path of your icon file -->
+      <img src="./icon128.png" alt="Vaulty Logo" class="brand-logo">
+      <h2>Vaulty Sync Account</h2>
+    </div>
     
     <!-- Logged Out View -->
     <div id="loggedOutView">
       <p>Sign in to sync your copied snippets directly through Cloud Firestore across all VDI sessions.</p>
       
-      <input type="email" id="emailInput" placeholder="Work Email (e.g. name@company.com)">
+      <input type="email" id="emailInput" placeholder="Email (e.g. vinay@gmail.com)">
       <input type="password" id="passwordInput" placeholder="Password (min 6 characters)">
 
       <a id="showForgotBtn" class="forgot-link">Forgot password?</a>

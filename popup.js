@@ -5,6 +5,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.getElementById('searchInput');
   const loginBtnHeader = document.getElementById('loginBtnHeader');
   const syncBtnHeader = document.getElementById('syncBtnHeader');
+  const copyVaultWebBtn = document.getElementById('copyVaultWebBtn');
+  const copyTag = document.getElementById('copyTag');
+
+  if (copyVaultWebBtn) {
+    copyVaultWebBtn.addEventListener('click', () => {
+      const webVaultUrl = 'https://vaulty-web.netlify.app/';
+
+      navigator.clipboard.writeText(webVaultUrl).then(() => {
+        copyTag.textContent = 'Site URL Copied!';
+        copyTag.style.background = '#28a745';
+        copyTag.style.color = '#ffffff';
+        copyTag.style.borderColor = '#28a745';
+
+        setTimeout(() => {
+          copyTag.textContent = 'Click to Copy';
+          copyTag.style.background = 'var(--card-bg)';
+          copyTag.style.color = 'var(--accent-color)';
+          copyTag.style.borderColor = 'var(--accent-color)';
+        }, 1200);
+      });
+    });
+  }
 
   function updateHeaderState() {
     chrome.storage.local.get(['userEmail'], (res = {}) => {
